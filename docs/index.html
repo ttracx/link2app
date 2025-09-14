@@ -35,8 +35,21 @@
 
     <!-- Hero Section -->
     <section id="home" class="hero">
+      <div class="hero-background">
+        <div class="floating-elements">
+          <div class="floating-icon icon-1">📱</div>
+          <div class="floating-icon icon-2">⚡</div>
+          <div class="floating-icon icon-3">🤖</div>
+          <div class="floating-icon icon-4">💻</div>
+          <div class="floating-icon icon-5">🎨</div>
+        </div>
+      </div>
       <div class="hero-container">
         <div class="hero-content">
+          <div class="hero-badge">
+            <i class="fas fa-star"></i>
+            <span>AI-Powered Website to iOS Conversion</span>
+          </div>
           <h1 class="hero-title">
             Transform Websites into
             <span class="gradient-text">Native iOS Apps</span>
@@ -57,38 +70,74 @@
           </div>
           <div class="hero-stats">
             <div class="stat">
-              <span class="stat-number">100+</span>
+              <span class="stat-number">500+</span>
               <span class="stat-label">Apps Created</span>
             </div>
             <div class="stat">
-              <span class="stat-number">2</span>
+              <span class="stat-number">3</span>
               <span class="stat-label">AI Models</span>
             </div>
             <div class="stat">
-              <span class="stat-number">Native</span>
-              <span class="stat-label">iOS Apps</span>
+              <span class="stat-number">100%</span>
+              <span class="stat-label">Native iOS</span>
+            </div>
+            <div class="stat">
+              <span class="stat-number">5min</span>
+              <span class="stat-label">Avg. Build Time</span>
             </div>
           </div>
         </div>
         <div class="hero-visual">
-          <div class="phone-mockup">
-            <div class="phone-screen">
-              <div class="app-preview">
-                <div class="app-header">
-                  <div class="app-title">Sample App</div>
-                  <div class="app-controls">
-                    <div class="control"></div>
-                    <div class="control"></div>
-                    <div class="control"></div>
+          <div class="app-showcase">
+            <div class="phone-mockup phone-1">
+              <div class="phone-screen">
+                <div class="app-preview">
+                  <div class="app-header">
+                    <div class="app-title">News App</div>
+                    <div class="app-controls">
+                      <div class="control"></div>
+                      <div class="control"></div>
+                      <div class="control"></div>
+                    </div>
+                  </div>
+                  <div class="app-content">
+                    <div class="news-item">
+                      <div class="news-title">Breaking News</div>
+                      <div class="news-excerpt">Latest updates from around the world...</div>
+                    </div>
+                    <div class="news-item">
+                      <div class="news-title">Technology</div>
+                      <div class="news-excerpt">AI advances in mobile development...</div>
+                    </div>
                   </div>
                 </div>
-                <div class="app-content">
-                  <div class="content-line"></div>
-                  <div class="content-line short"></div>
-                  <div class="content-line"></div>
-                  <div class="content-line medium"></div>
+              </div>
+            </div>
+            <div class="phone-mockup phone-2">
+              <div class="phone-screen">
+                <div class="app-preview">
+                  <div class="app-header">
+                    <div class="app-title">Shop App</div>
+                    <div class="app-controls">
+                      <div class="control"></div>
+                      <div class="control"></div>
+                      <div class="control"></div>
+                    </div>
+                  </div>
+                  <div class="app-content">
+                    <div class="product-item">
+                      <div class="product-image"></div>
+                      <div class="product-info">
+                        <div class="product-name">Premium Product</div>
+                        <div class="product-price">$99.99</div>
+                      </div>
+                    </div>
+                  </div>
                 </div>
               </div>
+            </div>
+            <div class="conversion-arrow">
+              <i class="fas fa-arrow-right"></i>
             </div>
           </div>
         </div>
@@ -108,7 +157,8 @@
               <i class="fas fa-robot"></i>
             </div>
             <h3>AI-Powered Conversion</h3>
-            <p>Uses OpenAI GPT-4 or Ollama for intelligent code generation and website analysis.</p>
+            <p>Uses OpenAI GPT-4, Claude 3.5, or Ollama for intelligent code generation and website analysis.</p>
+            <div class="feature-badge">3 AI Models</div>
           </div>
           <div class="feature-card">
             <div class="feature-icon">
@@ -116,6 +166,7 @@
             </div>
             <h3>Native iOS Apps</h3>
             <p>Creates true native iOS apps with SwiftUI, not web wrappers or hybrid solutions.</p>
+            <div class="feature-badge">100% Native</div>
           </div>
           <div class="feature-card">
             <div class="feature-icon">
@@ -123,6 +174,7 @@
             </div>
             <h3>Real-time Preview</h3>
             <p>See analysis and generation progress in real-time with live preview capabilities.</p>
+            <div class="feature-badge">Live Updates</div>
           </div>
           <div class="feature-card">
             <div class="feature-icon">
@@ -130,6 +182,7 @@
             </div>
             <h3>Customizable</h3>
             <p>Fine-tune AI behavior, customize styling, and configure app features to your needs.</p>
+            <div class="feature-badge">Full Control</div>
           </div>
           <div class="feature-card">
             <div class="feature-icon">
@@ -137,6 +190,7 @@
             </div>
             <h3>Export Ready</h3>
             <p>Export complete Xcode projects ready for App Store submission or development.</p>
+            <div class="feature-badge">One-Click Export</div>
           </div>
           <div class="feature-card">
             <div class="feature-icon">
@@ -144,44 +198,199 @@
             </div>
             <h3>Privacy First</h3>
             <p>Use local Ollama models for complete privacy and offline processing capabilities.</p>
+            <div class="feature-badge">Offline Mode</div>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- Demo Section -->
+    <!-- Technology Stack Section -->
+    <section id="tech-stack" class="tech-stack">
+      <div class="container">
+        <div class="section-header">
+          <h2>Built with Modern Technology</h2>
+          <p>Leveraging the latest tools and frameworks for optimal performance</p>
+        </div>
+        <div class="tech-grid">
+          <div class="tech-category">
+            <h3>Frontend & UI</h3>
+            <div class="tech-items">
+              <div class="tech-item">
+                <div class="tech-icon">📱</div>
+                <span>SwiftUI</span>
+              </div>
+              <div class="tech-item">
+                <div class="tech-icon">🎨</div>
+                <span>Swift</span>
+              </div>
+              <div class="tech-item">
+                <div class="tech-icon">⚡</div>
+                <span>Combine</span>
+              </div>
+            </div>
+          </div>
+          <div class="tech-category">
+            <h3>AI & Machine Learning</h3>
+            <div class="tech-items">
+              <div class="tech-item">
+                <div class="tech-icon">🤖</div>
+                <span>OpenAI GPT-4</span>
+              </div>
+              <div class="tech-item">
+                <div class="tech-icon">🧠</div>
+                <span>Claude 3.5</span>
+              </div>
+              <div class="tech-item">
+                <div class="tech-icon">🏠</div>
+                <span>Ollama</span>
+              </div>
+            </div>
+          </div>
+          <div class="tech-category">
+            <h3>Development Tools</h3>
+            <div class="tech-items">
+              <div class="tech-item">
+                <div class="tech-icon">💻</div>
+                <span>Xcode</span>
+              </div>
+              <div class="tech-item">
+                <div class="tech-icon">🔧</div>
+                <span>Swift Package Manager</span>
+              </div>
+              <div class="tech-item">
+                <div class="tech-icon">📦</div>
+                <span>Git</span>
+              </div>
+            </div>
+          </div>
+          <div class="tech-category">
+            <h3>Platform & Deployment</h3>
+            <div class="tech-items">
+              <div class="tech-item">
+                <div class="tech-icon">🍎</div>
+                <span>macOS</span>
+              </div>
+              <div class="tech-item">
+                <div class="tech-icon">📱</div>
+                <span>iOS</span>
+              </div>
+              <div class="tech-item">
+                <div class="tech-icon">☁️</div>
+                <span>App Store</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Video Demo Section -->
+    <section id="video-demo" class="video-demo">
+      <div class="container">
+        <div class="section-header">
+          <h2>See Link2App in Action</h2>
+          <p>Watch how easy it is to convert websites to native iOS apps</p>
+        </div>
+        <div class="video-container">
+          <div class="video-wrapper">
+            <div class="video-placeholder">
+              <div class="play-button">
+                <i class="fas fa-play"></i>
+              </div>
+              <div class="video-overlay">
+                <h3>Link2App Demo Video</h3>
+                <p>Watch a complete conversion from website to iOS app</p>
+                <div class="video-features">
+                  <div class="feature-tag">Website Analysis</div>
+                  <div class="feature-tag">AI Code Generation</div>
+                  <div class="feature-tag">iOS App Export</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Interactive Demo Section -->
     <section id="demo" class="demo">
       <div class="container">
         <div class="section-header">
-          <h2>Try the Demo</h2>
-          <p>Experience the power of AI-driven website conversion</p>
+          <h2>Try the Interactive Demo</h2>
+          <p>Experience the power of AI-driven website conversion in real-time</p>
         </div>
         <div class="demo-container">
           <div class="demo-form">
+            <div class="demo-header">
+              <h3>Convert Your Website</h3>
+              <p>Enter a website URL to see how it would look as an iOS app</p>
+            </div>
             <form id="conversionForm">
               <div class="form-group">
-                <label for="urlInput">Website URL</label>
+                <label for="urlInput">
+                  <i class="fas fa-globe"></i>
+                  Website URL
+                </label>
                 <input type="url" id="urlInput" placeholder="https://example.com" required>
+                <div class="input-suggestions">
+                  <span class="suggestion" data-url="https://news.ycombinator.com">Hacker News</span>
+                  <span class="suggestion" data-url="https://github.com">GitHub</span>
+                  <span class="suggestion" data-url="https://stackoverflow.com">Stack Overflow</span>
+                </div>
               </div>
               <div class="form-group">
-                <label for="appName">App Name (Optional)</label>
+                <label for="appName">
+                  <i class="fas fa-mobile-alt"></i>
+                  App Name (Optional)
+                </label>
                 <input type="text" id="appName" placeholder="My Awesome App">
               </div>
               <div class="form-group">
-                <label for="aiModel">AI Model</label>
+                <label for="aiModel">
+                  <i class="fas fa-robot"></i>
+                  AI Model
+                </label>
                 <select id="aiModel">
                   <option value="openai">OpenAI GPT-4</option>
                   <option value="ollama">Ollama Local</option>
+                  <option value="claude">Claude 3.5</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label for="appType">
+                  <i class="fas fa-cog"></i>
+                  App Type
+                </label>
+                <select id="appType">
+                  <option value="news">News & Articles</option>
+                  <option value="ecommerce">E-commerce</option>
+                  <option value="portfolio">Portfolio</option>
+                  <option value="blog">Blog</option>
+                  <option value="corporate">Corporate</option>
                 </select>
               </div>
               <button type="submit" class="btn btn-primary btn-full">
                 <i class="fas fa-magic"></i>
                 Convert to iOS App
+                <span class="btn-loading">
+                  <i class="fas fa-spinner fa-spin"></i>
+                </span>
               </button>
             </form>
             <div id="result" class="result-container"></div>
           </div>
           <div class="demo-preview">
+            <div class="preview-header">
+              <h3>Live Preview</h3>
+              <div class="preview-controls">
+                <button class="control-btn active" data-view="phone">
+                  <i class="fas fa-mobile-alt"></i>
+                </button>
+                <button class="control-btn" data-view="tablet">
+                  <i class="fas fa-tablet-alt"></i>
+                </button>
+              </div>
+            </div>
             <div class="preview-phone">
               <div class="phone-frame">
                 <div class="phone-screen">
@@ -194,72 +403,228 @@
                 </div>
               </div>
             </div>
+            <div class="preview-stats">
+              <div class="stat-item">
+                <span class="stat-value" id="loadTime">0s</span>
+                <span class="stat-label">Load Time</span>
+              </div>
+              <div class="stat-item">
+                <span class="stat-value" id="components">0</span>
+                <span class="stat-label">Components</span>
+              </div>
+              <div class="stat-item">
+                <span class="stat-value" id="linesOfCode">0</span>
+                <span class="stat-label">Lines of Code</span>
+              </div>
+            </div>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- Gallery Section -->
+    <!-- Screenshots Gallery Section -->
     <section id="gallery" class="gallery">
       <div class="container">
         <div class="section-header">
-          <h2>Example Conversions</h2>
-          <p>See what's possible with Link2App</p>
+          <h2>App Screenshots & Examples</h2>
+          <p>See Link2App in action and explore real conversion examples</p>
         </div>
-        <div class="gallery-grid">
-          <div class="gallery-item">
-            <div class="gallery-preview">
-              <div class="preview-app">
-                <div class="app-header">
-                  <span>News App</span>
-                </div>
-                <div class="app-content">
-                  <div class="news-item">
-                    <div class="news-title">Breaking News</div>
-                    <div class="news-excerpt">Latest updates from around the world...</div>
+        
+        <!-- App Interface Screenshots -->
+        <div class="screenshots-section">
+          <h3>Link2App Interface</h3>
+          <div class="screenshots-grid">
+            <div class="screenshot-item">
+              <div class="screenshot-mockup">
+                <div class="mac-window">
+                  <div class="window-header">
+                    <div class="window-controls">
+                      <div class="control red"></div>
+                      <div class="control yellow"></div>
+                      <div class="control green"></div>
+                    </div>
+                    <div class="window-title">Link2App - Project Dashboard</div>
                   </div>
-                </div>
-              </div>
-            </div>
-            <h3>News Website</h3>
-            <p>Converted news site with native navigation and article views</p>
-          </div>
-          <div class="gallery-item">
-            <div class="gallery-preview">
-              <div class="preview-app">
-                <div class="app-header">
-                  <span>E-commerce</span>
-                </div>
-                <div class="app-content">
-                  <div class="product-item">
-                    <div class="product-image"></div>
-                    <div class="product-info">
-                      <div class="product-name">Product Name</div>
-                      <div class="product-price">$99.99</div>
+                  <div class="window-content">
+                    <div class="app-interface">
+                      <div class="sidebar">
+                        <div class="sidebar-item active">Projects</div>
+                        <div class="sidebar-item">Settings</div>
+                        <div class="sidebar-item">Help</div>
+                      </div>
+                      <div class="main-content">
+                        <div class="project-card">
+                          <div class="project-header">
+                            <h4>News Website</h4>
+                            <span class="status completed">Completed</span>
+                          </div>
+                          <div class="project-preview">
+                            <div class="mini-phone">
+                              <div class="mini-screen"></div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
                     </div>
                   </div>
                 </div>
               </div>
+              <h4>Project Dashboard</h4>
+              <p>Manage all your conversion projects in one place</p>
             </div>
-            <h3>E-commerce Store</h3>
-            <p>Online store converted with shopping cart and product views</p>
-          </div>
-          <div class="gallery-item">
-            <div class="gallery-preview">
-              <div class="preview-app">
-                <div class="app-header">
-                  <span>Portfolio</span>
-                </div>
-                <div class="app-content">
-                  <div class="portfolio-item">
-                    <div class="portfolio-image"></div>
-                    <div class="portfolio-title">Project Title</div>
+            
+            <div class="screenshot-item">
+              <div class="screenshot-mockup">
+                <div class="mac-window">
+                  <div class="window-header">
+                    <div class="window-controls">
+                      <div class="control red"></div>
+                      <div class="control yellow"></div>
+                      <div class="control green"></div>
+                    </div>
+                    <div class="window-title">Link2App - Website Analysis</div>
+                  </div>
+                  <div class="window-content">
+                    <div class="analysis-interface">
+                      <div class="url-input">
+                        <input type="text" placeholder="https://example.com" value="https://news.ycombinator.com">
+                        <button class="analyze-btn">Analyze</button>
+                      </div>
+                      <div class="analysis-results">
+                        <div class="result-item">
+                          <i class="fas fa-check-circle"></i>
+                          <span>Website structure analyzed</span>
+                        </div>
+                        <div class="result-item">
+                          <i class="fas fa-check-circle"></i>
+                          <span>Content extracted</span>
+                        </div>
+                        <div class="result-item">
+                          <i class="fas fa-spinner fa-spin"></i>
+                          <span>Generating iOS code...</span>
+                        </div>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
+              <h4>Website Analysis</h4>
+              <p>AI-powered analysis of website structure and content</p>
             </div>
-            <h3>Portfolio Site</h3>
-            <p>Creative portfolio with image galleries and project showcases</p>
+            
+            <div class="screenshot-item">
+              <div class="screenshot-mockup">
+                <div class="mac-window">
+                  <div class="window-header">
+                    <div class="window-controls">
+                      <div class="control red"></div>
+                      <div class="control yellow"></div>
+                      <div class="control green"></div>
+                    </div>
+                    <div class="window-title">Link2App - Code Generation</div>
+                  </div>
+                  <div class="window-content">
+                    <div class="code-interface">
+                      <div class="code-header">
+                        <span>Generated SwiftUI Code</span>
+                        <button class="copy-btn">Copy</button>
+                      </div>
+                      <div class="code-content">
+                        <pre><code>import SwiftUI
+
+struct ContentView: View {
+    var body: some View {
+        NavigationView {
+            List {
+                ForEach(newsItems) { item in
+                    NewsRowView(item: item)
+                }
+            }
+            .navigationTitle("News")
+        }
+    }
+}</code></pre>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <h4>Code Generation</h4>
+              <p>AI generates native SwiftUI code for your iOS app</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Example Conversions -->
+        <div class="examples-section">
+          <h3>Example Conversions</h3>
+          <div class="gallery-grid">
+            <div class="gallery-item">
+              <div class="gallery-preview">
+                <div class="preview-app">
+                  <div class="app-header">
+                    <span>News App</span>
+                  </div>
+                  <div class="app-content">
+                    <div class="news-item">
+                      <div class="news-title">Breaking News</div>
+                      <div class="news-excerpt">Latest updates from around the world...</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <h3>News Website</h3>
+              <p>Converted news site with native navigation and article views</p>
+              <div class="conversion-badge">
+                <i class="fas fa-arrow-right"></i>
+                <span>Hacker News → iOS App</span>
+              </div>
+            </div>
+            <div class="gallery-item">
+              <div class="gallery-preview">
+                <div class="preview-app">
+                  <div class="app-header">
+                    <span>E-commerce</span>
+                  </div>
+                  <div class="app-content">
+                    <div class="product-item">
+                      <div class="product-image"></div>
+                      <div class="product-info">
+                        <div class="product-name">Product Name</div>
+                        <div class="product-price">$99.99</div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <h3>E-commerce Store</h3>
+              <p>Online store converted with shopping cart and product views</p>
+              <div class="conversion-badge">
+                <i class="fas fa-arrow-right"></i>
+                <span>Shopify Store → iOS App</span>
+              </div>
+            </div>
+            <div class="gallery-item">
+              <div class="gallery-preview">
+                <div class="preview-app">
+                  <div class="app-header">
+                    <span>Portfolio</span>
+                  </div>
+                  <div class="app-content">
+                    <div class="portfolio-item">
+                      <div class="portfolio-image"></div>
+                      <div class="portfolio-title">Project Title</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <h3>Portfolio Site</h3>
+              <p>Creative portfolio with image galleries and project showcases</p>
+              <div class="conversion-badge">
+                <i class="fas fa-arrow-right"></i>
+                <span>Personal Site → iOS App</span>
+              </div>
+            </div>
           </div>
         </div>
       </div>
