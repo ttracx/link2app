@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Link2App - URL to iOS App Converter</title>
+    <meta name="description" content="Convert any URL into an iOS app using AI">
+    <link rel="icon" type="image/x-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📱</text></svg>">
+    <link rel="stylesheet" href="./src/style.css">
+</head>
+<body>
+    <div class="app">
+        <header class="header">
+            <h1>Link2App</h1>
+            <p class="subtitle">Convert any website into an iOS app using AI</p>
+        </header>
+        
+        <main class="main">
+            <form id="app-form" class="form">
+                <div class="input-group">
+                    <label for="url" class="label">Website URL</label>
+                    <input
+                        id="url"
+                        type="url"
+                        placeholder="https://example.com"
+                        class="input"
+                        required
+                    />
+                </div>
+                
+                <div class="button-group">
+                    <button
+                        type="submit"
+                        class="button button-primary"
+                        id="convert-btn"
+                    >
+                        Convert to iOS App
+                    </button>
+                    
+                    <button
+                        type="button"
+                        class="button button-secondary"
+                        id="clear-btn"
+                    >
+                        Clear
+                    </button>
+                </div>
+            </form>
+
+            <div id="error-message" class="alert alert-error" style="display: none;">
+                <strong>Error: </strong>
+                <span id="error-text"></span>
+            </div>
+
+            <div id="result" class="result" style="display: none;">
+                <div id="download-result" class="alert alert-success" style="display: none;">
+                    <h3>🎉 Success!</h3>
+                    <p id="download-message">iOS app generated successfully!</p>
+                    <a
+                        id="download-link"
+                        href="#"
+                        download
+                        class="download-link"
+                    >
+                        📱 Download iOS App (.ipa)
+                    </a>
+                </div>
+                
+                <div id="info-result" class="alert alert-info" style="display: none;">
+                    <h3>ℹ️ Information</h3>
+                    <p id="info-message"></p>
+                </div>
+            </div>
+        </main>
+
+        <footer class="footer">
+            <p>Powered by NVIDIA AI • Built with Vanilla JS</p>
+        </footer>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const form = document.getElementById('app-form');
+            const urlInput = document.getElementById('url');
+            const convertBtn = document.getElementById('convert-btn');
+            const clearBtn = document.getElementById('clear-btn');
+            const errorMessage = document.getElementById('error-message');
+            const errorText = document.getElementById('error-text');
+            const result = document.getElementById('result');
+            const downloadResult = document.getElementById('download-result');
+            const infoResult = document.getElementById('info-result');
+            const downloadLink = document.getElementById('download-link');
+            const downloadMessage = document.getElementById('download-message');
+            const infoMessage = document.getElementById('info-message');
+
+            // Clear all messages
+            function clearMessages() {
+                errorMessage.style.display = 'none';
+                result.style.display = 'none';
+                downloadResult.style.display = 'none';
+                infoResult.style.display = 'none';
+            }
+
+            // Show error message
+            function showError(message) {
+                clearMessages();
+                errorText.textContent = message;
+                errorMessage.style.display = 'block';
+            }
+
+            // Show download result
+            function showDownload(url, message = 'iOS app generated successfully!') {
+                clearMessages();
+                downloadMessage.textContent = message;
+                downloadLink.href = url;
+                downloadResult.style.display = 'block';
+                result.style.display = 'block';
+            }
+
+            // Show info result
+            function showInfo(message) {
+                clearMessages();
+                infoMessage.textContent = message;
+                infoResult.style.display = 'block';
+                result.style.display = 'block';
+            }
+
+            // Set loading state
+            function setLoading(loading) {
+                convertBtn.disabled = loading;
+                urlInput.disabled = loading;
+                clearBtn.disabled = loading;
+                convertBtn.textContent = loading ? 'Converting...' : 'Convert to iOS App';
+            }
+
+            // Handle form submission
+            form.addEventListener('submit', async function(e) {
+                e.preventDefault();
+                
+                const url = urlInput.value.trim();
+                if (!url) {
+                    showError('Please enter a valid URL');
+                    return;
+                }
+
+                setLoading(true);
+                clearMessages();
+
+                try {
+                    const response = await fetch('https://integrate.api.nvidia.com/v1/chat/completions', {
+                        method: 'POST',
+                        headers: {
+                            'Authorization': 'Bearer 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',
+                            'Accept': 'application/json',
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({
+                            model: 'meta/llama-3.1-405b-instruct',
+                            messages: [
+                                {
+                                    role: 'system',
+                                    content: 'You are an AI assistant that converts websites into iOS apps. When given a URL, analyze it and either provide a download link for an iOS .ipa file or explain what you found. If you can provide an .ipa file, respond with "DOWNLOAD: [URL]" where [URL] is the direct download link. Otherwise, provide informational text about the website.'
+                                },
+                                {
+                                    role: 'user',
+                                    content: `Convert this website to an iOS app: ${url}`
+                                }
+                            ],
+                            max_tokens: 1024,
+                            temperature: 0.7
+                        })
+                    });
+
+                    if (!response.ok) {
+                        throw new Error(`API request failed: ${response.status} ${response.statusText}`);
+                    }
+
+                    const data = await response.json();
+                    const aiResponse = data.choices?.[0]?.message?.content || 'No response received';
+                    
+                    // Check if the response contains a download link
+                    if (aiResponse.startsWith('DOWNLOAD:')) {
+                        const downloadUrl = aiResponse.replace('DOWNLOAD:', '').trim();
+                        showDownload(downloadUrl);
+                    } else {
+                        showInfo(aiResponse);
+                    }
+
+                } catch (err) {
+                    console.error('Error:', err);
+                    showError(err.message || 'An error occurred while processing your request');
+                } finally {
+                    setLoading(false);
+                }
+            });
+
+            // Handle clear button
+            clearBtn.addEventListener('click', function() {
+                urlInput.value = '';
+                clearMessages();
+            });
+        });
+    </script>
+</body>
+</html>
