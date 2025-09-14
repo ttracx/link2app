@@ -3,6 +3,7 @@ import SwiftUI
 struct SettingsView: View {
     @ObservedObject var viewModel: WebsiteConversionViewModel
     @Environment(\.dismiss) private var dismiss
+    @Environment(\.colorScheme) private var colorScheme
     
     @State private var openAIKey = ""
     @State private var ollamaURL = "http://localhost:11434"
@@ -11,103 +12,137 @@ struct SettingsView: View {
     @State private var isLoadingModels = false
     @State private var showingAPIKeyAlert = false
     @State private var showingOllamaAlert = false
+    @State private var selectedAIModel: AIModel = .openAI
+    @State private var autoSave = true
+    @State private var showPreview = true
+    @State private var enableAnalytics = false
     
     var body: some View {
         NavigationView {
-            Form {
-                Section("AI Configuration") {
-                    Picker("AI Model", selection: .constant(AIModel.openAI)) {
-                        ForEach(AIModel.allCases, id: \.self) { model in
-                            Text(model.displayName).tag(model)
-                        }
+            ScrollView {
+                VStack(spacing: 32) {
+                    // Header
+                    VStack(spacing: 16) {
+                        Image(systemName: "gear.circle.fill")
+                            .font(.system(size: 60))
+                            .foregroundStyle(
+                                LinearGradient(
+                                    gradient: Gradient(colors: [.blue, .purple]),
+                                    startPoint: .topLeading,
+                                    endPoint: .bottomTrailing
+                                )
+                            )
+                        
+                        Text("Settings")
+                            .font(.largeTitle)
+                            .fontWeight(.bold)
+                        
+                        Text("Configure your AI models and app preferences")
+                            .font(.subheadline)
+                            .foregroundColor(.secondary)
+                            .multilineTextAlignment(.center)
                     }
-                    .pickerStyle(.segmented)
-                }
-                
-                Section("OpenAI Settings") {
-                    HStack {
-                        Text("API Key")
-                        Spacer()
-                        SecureField("Enter API key", text: $openAIKey)
-                            .textFieldStyle(.roundedBorder)
-                            .frame(width: 200)
-                    }
+                    .padding(.top, 20)
                     
-                    Button("Test Connection") {
-                        testOpenAIConnection()
-                    }
-                    .disabled(openAIKey.isEmpty)
-                }
-                
-                Section("Ollama Settings") {
-                    HStack {
-                        Text("Base URL")
-                        Spacer()
-                        TextField("Ollama URL", text: $ollamaURL)
-                            .textFieldStyle(.roundedBorder)
-                            .frame(width: 200)
-                    }
-                    
-                    HStack {
-                        Text("Model")
-                        Spacer()
-                        Picker("Model", selection: $ollamaModel) {
-                            ForEach(availableModels, id: \.self) { model in
-                                Text(model).tag(model)
+                    VStack(spacing: 24) {
+                        // AI Configuration Section
+                        SettingsSection(
+                            title: "AI Configuration",
+                            icon: "brain.head.profile",
+                            color: .blue
+                        ) {
+                            VStack(spacing: 20) {
+                                AIModelPicker(selectedModel: $selectedAIModel)
+                                
+                                if selectedAIModel == .openAI {
+                                    OpenAISettingsView(
+                                        apiKey: $openAIKey,
+                                        onTestConnection: testOpenAIConnection
+                                    )
+                                } else {
+                                    OllamaSettingsView(
+                                        baseURL: $ollamaURL,
+                                        selectedModel: $ollamaModel,
+                                        availableModels: availableModels,
+                                        isLoadingModels: isLoadingModels,
+                                        onLoadModels: loadAvailableModels,
+                                        onTestConnection: testOllamaConnection
+                                    )
+                                }
                             }
                         }
-                        .pickerStyle(.menu)
-                        .frame(width: 200)
-                    }
-                    
-                    HStack {
-                        Button("Load Models") {
-                            loadAvailableModels()
-                        }
-                        .disabled(isLoadingModels)
                         
-                        Spacer()
-                        
-                        Button("Test Connection") {
-                            testOllamaConnection()
+                        // App Settings Section
+                        SettingsSection(
+                            title: "App Preferences",
+                            icon: "app.badge",
+                            color: .green
+                        ) {
+                            VStack(spacing: 16) {
+                                ToggleRow(
+                                    title: "Auto-save projects",
+                                    subtitle: "Automatically save changes to your projects",
+                                    isOn: $autoSave,
+                                    icon: "square.and.arrow.down"
+                                )
+                                
+                                ToggleRow(
+                                    title: "Show preview in sidebar",
+                                    subtitle: "Display website preview in the sidebar",
+                                    isOn: $showPreview,
+                                    icon: "eye"
+                                )
+                                
+                                ToggleRow(
+                                    title: "Enable analytics",
+                                    subtitle: "Help improve the app by sharing anonymous usage data",
+                                    isOn: $enableAnalytics,
+                                    icon: "chart.bar"
+                                )
+                            }
                         }
-                        .disabled(ollamaURL.isEmpty)
+                        
+                        // About Section
+                        SettingsSection(
+                            title: "About",
+                            icon: "info.circle",
+                            color: .purple
+                        ) {
+                            VStack(spacing: 16) {
+                                InfoRow(title: "Version", value: "1.0.0", icon: "tag")
+                                InfoRow(title: "Build", value: "1", icon: "hammer")
+                                
+                                Button(action: {}) {
+                                    HStack {
+                                        Image(systemName: "arrow.clockwise")
+                                        Text("Check for Updates")
+                                    }
+                                    .frame(maxWidth: .infinity)
+                                }
+                                .buttonStyle(.bordered)
+                            }
+                        }
                     }
-                }
-                
-                Section("App Settings") {
-                    Toggle("Auto-save projects", isOn: .constant(true))
-                    Toggle("Show preview in sidebar", isOn: .constant(true))
-                    Toggle("Enable analytics", isOn: .constant(false))
-                }
-                
-                Section("About") {
-                    HStack {
-                        Text("Version")
-                        Spacer()
-                        Text("1.0.0")
-                            .foregroundColor(.secondary)
-                    }
-                    
-                    HStack {
-                        Text("Build")
-                        Spacer()
-                        Text("1")
-                            .foregroundColor(.secondary)
-                    }
-                    
-                    Button("Check for Updates") {
-                        // Check for updates
-                    }
+                    .padding(.horizontal, 20)
                 }
             }
-            .formStyle(.grouped)
-            .navigationTitle("Settings")
+            .background(
+                LinearGradient(
+                    gradient: Gradient(colors: [
+                        colorScheme == .dark ? Color.black : Color.white,
+                        colorScheme == .dark ? Color.gray.opacity(0.1) : Color.blue.opacity(0.02)
+                    ]),
+                    startPoint: .topLeading,
+                    endPoint: .bottomTrailing
+                )
+            )
+            .navigationTitle("")
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {
                     Button("Cancel") {
                         dismiss()
                     }
+                    .buttonStyle(.bordered)
                 }
                 
                 ToolbarItem(placement: .confirmationAction) {
@@ -115,10 +150,11 @@ struct SettingsView: View {
                         saveSettings()
                         dismiss()
                     }
+                    .buttonStyle(.borderedProminent)
                 }
             }
         }
-        .frame(width: 500, height: 600)
+        .frame(width: 600, height: 700)
         .onAppear {
             loadSettings()
         }
@@ -201,6 +237,211 @@ struct SettingsView: View {
                 }
             }
         }
+    }
+}
+
+// MARK: - Supporting Views
+
+struct SettingsSection<Content: View>: View {
+    let title: String
+    let icon: String
+    let color: Color
+    @ViewBuilder let content: Content
+    @Environment(\.colorScheme) private var colorScheme
+    
+    var body: some View {
+        VStack(alignment: .leading, spacing: 16) {
+            HStack(spacing: 12) {
+                ZStack {
+                    Circle()
+                        .fill(color.opacity(0.1))
+                        .frame(width: 32, height: 32)
+                    
+                    Image(systemName: icon)
+                        .font(.title3)
+                        .foregroundColor(color)
+                }
+                
+                Text(title)
+                    .font(.title2)
+                    .fontWeight(.semibold)
+            }
+            
+            content
+        }
+        .padding(20)
+        .background(
+            RoundedRectangle(cornerRadius: 16)
+                .fill(Color(NSColor.controlBackgroundColor))
+                .shadow(color: .black.opacity(0.05), radius: 4, x: 0, y: 2)
+        )
+    }
+}
+
+struct AIModelPicker: View {
+    @Binding var selectedModel: AIModel
+    
+    var body: some View {
+        VStack(alignment: .leading, spacing: 12) {
+            Text("AI Model")
+                .font(.headline)
+            
+            Picker("AI Model", selection: $selectedModel) {
+                ForEach(AIModel.allCases, id: \.self) { model in
+                    VStack(alignment: .leading) {
+                        Text(model.displayName)
+                        Text(model.description)
+                            .font(.caption)
+                            .foregroundColor(.secondary)
+                    }
+                    .tag(model)
+                }
+            }
+            .pickerStyle(.segmented)
+        }
+    }
+}
+
+struct OpenAISettingsView: View {
+    @Binding var apiKey: String
+    let onTestConnection: () -> Void
+    
+    var body: some View {
+        VStack(spacing: 16) {
+            VStack(alignment: .leading, spacing: 8) {
+                Text("API Key")
+                    .font(.headline)
+                
+                SecureField("Enter your OpenAI API key", text: $apiKey)
+                    .textFieldStyle(.roundedBorder)
+            }
+            
+            Button("Test Connection") {
+                onTestConnection()
+            }
+            .buttonStyle(.bordered)
+            .disabled(apiKey.isEmpty)
+        }
+    }
+}
+
+struct OllamaSettingsView: View {
+    @Binding var baseURL: String
+    @Binding var selectedModel: String
+    let availableModels: [String]
+    let isLoadingModels: Bool
+    let onLoadModels: () -> Void
+    let onTestConnection: () -> Void
+    
+    var body: some View {
+        VStack(spacing: 16) {
+            VStack(alignment: .leading, spacing: 8) {
+                Text("Base URL")
+                    .font(.headline)
+                
+                TextField("Ollama URL", text: $baseURL)
+                    .textFieldStyle(.roundedBorder)
+            }
+            
+            VStack(alignment: .leading, spacing: 8) {
+                Text("Model")
+                    .font(.headline)
+                
+                Picker("Model", selection: $selectedModel) {
+                    ForEach(availableModels, id: \.self) { model in
+                        Text(model).tag(model)
+                    }
+                }
+                .pickerStyle(.menu)
+            }
+            
+            HStack(spacing: 12) {
+                Button("Load Models") {
+                    onLoadModels()
+                }
+                .buttonStyle(.bordered)
+                .disabled(isLoadingModels)
+                
+                Button("Test Connection") {
+                    onTestConnection()
+                }
+                .buttonStyle(.bordered)
+                .disabled(baseURL.isEmpty)
+            }
+        }
+    }
+}
+
+struct ToggleRow: View {
+    let title: String
+    let subtitle: String
+    @Binding var isOn: Bool
+    let icon: String
+    
+    var body: some View {
+        HStack(spacing: 16) {
+            ZStack {
+                Circle()
+                    .fill(Color.blue.opacity(0.1))
+                    .frame(width: 40, height: 40)
+                
+                Image(systemName: icon)
+                    .font(.title3)
+                    .foregroundColor(.blue)
+            }
+            
+            VStack(alignment: .leading, spacing: 4) {
+                Text(title)
+                    .font(.headline)
+                
+                Text(subtitle)
+                    .font(.subheadline)
+                    .foregroundColor(.secondary)
+            }
+            
+            Spacer()
+            
+            Toggle("", isOn: $isOn)
+        }
+        .padding(16)
+        .background(
+            RoundedRectangle(cornerRadius: 12)
+                .fill(Color(NSColor.controlBackgroundColor))
+        )
+    }
+}
+
+struct InfoRow: View {
+    let title: String
+    let value: String
+    let icon: String
+    
+    var body: some View {
+        HStack(spacing: 16) {
+            ZStack {
+                Circle()
+                    .fill(Color.purple.opacity(0.1))
+                    .frame(width: 40, height: 40)
+                
+                Image(systemName: icon)
+                    .font(.title3)
+                    .foregroundColor(.purple)
+            }
+            
+            Text(title)
+                .font(.headline)
+            
+            Spacer()
+            
+            Text(value)
+                .font(.subheadline)
+                .foregroundColor(.secondary)
+        }
+        .padding(16)
+        .background(
+            RoundedRectangle(cornerRadius: 12)
+                .fill(Color(NSColor.controlBackgroundColor))
+        )
     }
 }
 
