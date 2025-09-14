@@ -44,6 +44,24 @@
                     >
                         Clear
                     </button>
+                    
+                    <button
+                        type="button"
+                        class="button button-secondary"
+                        id="demo-download-btn"
+                        style="font-size: 0.9em;"
+                    >
+                        Demo: Download
+                    </button>
+                    
+                    <button
+                        type="button"
+                        class="button button-secondary"
+                        id="demo-info-btn"
+                        style="font-size: 0.9em;"
+                    >
+                        Demo: Info
+                    </button>
                 </div>
             </form>
 
@@ -84,6 +102,8 @@
             const urlInput = document.getElementById('url');
             const convertBtn = document.getElementById('convert-btn');
             const clearBtn = document.getElementById('clear-btn');
+            const demoDownloadBtn = document.getElementById('demo-download-btn');
+            const demoInfoBtn = document.getElementById('demo-info-btn');
             const errorMessage = document.getElementById('error-message');
             const errorText = document.getElementById('error-text');
             const result = document.getElementById('result');
@@ -198,6 +218,15 @@
             clearBtn.addEventListener('click', function() {
                 urlInput.value = '';
                 clearMessages();
+            });
+
+            // Demo buttons for testing UI responses
+            demoDownloadBtn.addEventListener('click', function() {
+                showDownload('https://example.com/myapp.ipa', 'Demo: iOS app generated successfully!');
+            });
+
+            demoInfoBtn.addEventListener('click', function() {
+                showInfo('Demo: I analyzed the website https://example.com and found it contains a simple landing page with contact information. This website could be converted into a native iOS app with navigation, contact forms, and responsive design. The app would include offline caching and push notification capabilities.');
             });
         });
     </script>
