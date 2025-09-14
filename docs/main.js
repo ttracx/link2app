@@ -490,11 +490,30 @@ document.addEventListener('DOMContentLoaded', () => {
   const featureCards = document.querySelectorAll('.feature-card');
   featureCards.forEach(card => {
     card.addEventListener('mouseenter', () => {
-      card.style.transform = 'translateY(-10px) scale(1.02)';
+      card.style.transform = 'translateY(-12px) scale(1.03)';
     });
     
     card.addEventListener('mouseleave', () => {
       card.style.transform = 'translateY(0) scale(1)';
+    });
+  });
+
+  // Add floating animation to tech items
+  const techItems = document.querySelectorAll('.tech-item');
+  techItems.forEach((item, index) => {
+    item.style.animationDelay = `${index * 0.1}s`;
+    item.classList.add('fade-in-up');
+  });
+
+  // Add parallax effect to floating icons
+  window.addEventListener('scroll', () => {
+    const scrolled = window.pageYOffset;
+    const floatingIcons = document.querySelectorAll('.floating-icon');
+    
+    floatingIcons.forEach((icon, index) => {
+      const speed = 0.5 + (index * 0.1);
+      const yPos = -(scrolled * speed);
+      icon.style.transform = `translateY(${yPos}px) rotate(${scrolled * 0.1}deg)`;
     });
   });
   
