@@ -2,6 +2,7 @@
 
 A powerful macOS app for Apple Silicon that transforms any website into a native iOS app using AI-powered code generation. Built with SwiftUI and supporting both OpenAI and Ollama local models.
 
+
 ## Features
 
 ### 🚀 Core Functionality
