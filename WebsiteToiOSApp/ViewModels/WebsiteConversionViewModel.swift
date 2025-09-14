@@ -31,6 +31,15 @@ class WebsiteConversionViewModel: ObservableObject {
         saveProjects()
     }
     
+    func validateURL(_ urlString: String) -> Bool {
+        guard let url = URL(string: urlString),
+              let scheme = url.scheme,
+              (scheme == "http" || scheme == "https") else {
+            return false
+        }
+        return true
+    }
+    
     func selectProject(_ project: Project) {
         selectedProject = project
     }
@@ -111,8 +120,125 @@ class WebsiteConversionViewModel: ObservableObject {
         guard let project = selectedProject,
               let code = generatedCode else { return }
         
-        // Implementation for exporting the generated iOS project
-        // This would create the Xcode project files and save them
+        let panel = NSOpenPanel()
+        panel.canChooseFiles = false
+        panel.canChooseDirectories = true
+        panel.canCreateDirectories = true
+        panel.prompt = "Choose Export Location"
+        panel.message = "Choose where to save the iOS project"
+        
+        panel.begin { response in
+            if response == .OK, let url = panel.url {
+                Task { @MainActor in
+                    await self.performExport(to: url, project: project, code: code)
+                }
+            }
+        }
+    }
+    
+    @MainActor
+    private func performExport(to url: URL, project: Project, code: GeneratedCode) async {
+        do {
+            let projectURL = url.appendingPathComponent(code.projectName)
+            try FileManager.default.createDirectory(at: projectURL, withIntermediateDirectories: true)
+            
+            // Create Xcode project directory
+            let xcodeProjectURL = projectURL.appendingPathComponent("\(code.projectName).xcodeproj")
+            try FileManager.default.createDirectory(at: xcodeProjectURL, withIntermediateDirectories: true)
+            
+            // Write Swift files
+            for swiftFile in code.swiftFiles {
+                let fileURL = projectURL.appendingPathComponent(swiftFile.fileName)
+                try swiftFile.content.write(to: fileURL, atomically: true, encoding: .utf8)
+            }
+            
+            // Write configuration files
+            for configFile in code.configurationFiles {
+                let fileURL = projectURL.appendingPathComponent(configFile.fileName)
+                try configFile.content.write(to: fileURL, atomically: true, encoding: .utf8)
+            }
+            
+            // Create Package.swift if there are dependencies
+            if !code.dependencies.isEmpty {
+                let packageSwift = generatePackageSwift(dependencies: code.dependencies)
+                let packageURL = projectURL.appendingPathComponent("Package.swift")
+                try packageSwift.write(to: packageURL, atomically: true, encoding: .utf8)
+            }
+            
+            // Show success message
+            let alert = NSAlert()
+            alert.messageText = "Export Successful"
+            alert.informativeText = "iOS project exported to: \(projectURL.path)"
+            alert.alertStyle = .informational
+            alert.addButton(withTitle: "OK")
+            alert.addButton(withTitle: "Open in Finder")
+            
+            let response = alert.runModal()
+            if response == .alertSecondButtonReturn {
+                NSWorkspace.shared.open(projectURL)
+            }
+            
+        } catch {
+            errorMessage = "Failed to export project: \(error.localizedDescription)"
+        }
+    }
+    
+    private func generatePackageSwift(dependencies: [Dependency]) -> String {
+        var packageContent = """
+        // swift-tools-version: 5.9
+        import PackageDescription
+
+        let package = Package(
+            name: "\(generatedCode?.projectName ?? "iOSApp")",
+            platforms: [
+                .iOS(.v15)
+            ],
+            products: [
+                .library(
+                    name: "\(generatedCode?.projectName ?? "iOSApp")",
+                    targets: ["\(generatedCode?.projectName ?? "iOSApp")"]
+                ),
+            ],
+            dependencies: [
+        """
+        
+        for dependency in dependencies {
+            switch dependency.source {
+            case .spm:
+                packageContent += """
+                    .package(url: "https://github.com/\(dependency.name)/\(dependency.name).git", from: "\(dependency.version)"),
+                """
+            case .cocoapods:
+                // CocoaPods dependencies would be handled separately
+                break
+            case .carthage:
+                // Carthage dependencies would be handled separately
+                break
+            }
+        }
+        
+        packageContent += """
+            ],
+            targets: [
+                .target(
+                    name: "\(generatedCode?.projectName ?? "iOSApp")",
+                    dependencies: [
+        """
+        
+        for dependency in dependencies {
+            packageContent += """
+                        "\(dependency.name)",
+            """
+        }
+        
+        packageContent += """
+                    ]
+                ),
+            ]
+        )
+        """
+        
+        return packageContent
     }
     
     private func loadProjects() {

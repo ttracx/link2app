@@ -3,6 +3,7 @@ import SwiftUI
 struct ContentView: View {
     @StateObject private var viewModel = WebsiteConversionViewModel()
     @State private var showingSettings = false
+    @State private var showingProjectEdit = false
     
     var body: some View {
         NavigationSplitView {
@@ -13,10 +14,23 @@ struct ContentView: View {
         .sheet(isPresented: $showingSettings) {
             SettingsView(viewModel: viewModel)
         }
+        .sheet(isPresented: $showingProjectEdit) {
+            if let project = viewModel.selectedProject {
+                ProjectEditView(project: project, viewModel: viewModel)
+            }
+        }
         .toolbar {
             ToolbarItem(placement: .primaryAction) {
-                Button("Settings") {
-                    showingSettings = true
+                HStack {
+                    if viewModel.selectedProject != nil {
+                        Button("Edit Project") {
+                            showingProjectEdit = true
+                        }
+                    }
+                    
+                    Button("Settings") {
+                        showingSettings = true
+                    }
                 }
             }
         }
@@ -57,6 +71,12 @@ struct SidebarView: View {
                 viewModel.createNewProject()
             }
             .buttonStyle(.borderedProminent)
+            .controlSize(.large)
+            
+            Button("Import Project") {
+                // TODO: Implement project import
+            }
+            .buttonStyle(.bordered)
             .controlSize(.large)
         }
         .padding()

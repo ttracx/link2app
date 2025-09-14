@@ -11,6 +11,15 @@
 		A1234567890ABCDEF1234567890ABCDEF1234568 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1234567890ABCDEF1234567890ABCDEF1234569 /* ContentView.swift */; };
 		A1234567890ABCDEF1234567890ABCDEF123456A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A1234567890ABCDEF1234567890ABCDEF123456B /* Assets.xcassets */; };
 		A1234567890ABCDEF1234567890ABCDEF123456C /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A1234567890ABCDEF1234567890ABCDEF123456D /* Preview Assets.xcassets */; };
+		A1234567890ABCDEF1234567890ABCDEF123456E /* Project.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1234567890ABCDEF1234567890ABCDEF123456F /* Project.swift */; };
+		A1234567890ABCDEF1234567890ABCDEF1234570 /* WebsiteConversionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1234567890ABCDEF1234567890ABCDEF1234571 /* WebsiteConversionViewModel.swift */; };
+		A1234567890ABCDEF1234567890ABCDEF1234572 /* WebsiteAnalyzer.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1234567890ABCDEF1234567890ABCDEF1234573 /* WebsiteAnalyzer.swift */; };
+		A1234567890ABCDEF1234567890ABCDEF1234574 /* AICodeGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1234567890ABCDEF1234567890ABCDEF1234575 /* AICodeGenerator.swift */; };
+		A1234567890ABCDEF1234567890ABCDEF1234576 /* OpenAIService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1234567890ABCDEF1234567890ABCDEF1234577 /* OpenAIService.swift */; };
+		A1234567890ABCDEF1234567890ABCDEF1234578 /* OllamaService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1234567890ABCDEF1234567890ABCDEF1234579 /* OllamaService.swift */; };
+		A1234567890ABCDEF1234567890ABCDEF1234580 /* ProjectDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1234567890ABCDEF1234567890ABCDEF1234581 /* ProjectDetailView.swift */; };
+		A1234567890ABCDEF1234567890ABCDEF1234582 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1234567890ABCDEF1234567890ABCDEF1234583 /* SettingsView.swift */; };
+		A1234567890ABCDEF1234567890ABCDEF1234584 /* ProjectEditView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1234567890ABCDEF1234567890ABCDEF1234585 /* ProjectEditView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -19,6 +28,16 @@
 		A1234567890ABCDEF1234567890ABCDEF1234569 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		A1234567890ABCDEF1234567890ABCDEF123456B /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		A1234567890ABCDEF1234567890ABCDEF123456D /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		A1234567890ABCDEF1234567890ABCDEF123456F /* Project.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Project.swift; sourceTree = "<group>"; };
+		A1234567890ABCDEF1234567890ABCDEF1234571 /* WebsiteConversionViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebsiteConversionViewModel.swift; sourceTree = "<group>"; };
+		A1234567890ABCDEF1234567890ABCDEF1234573 /* WebsiteAnalyzer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebsiteAnalyzer.swift; sourceTree = "<group>"; };
+		A1234567890ABCDEF1234567890ABCDEF1234575 /* AICodeGenerator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AICodeGenerator.swift; sourceTree = "<group>"; };
+		A1234567890ABCDEF1234567890ABCDEF1234577 /* OpenAIService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OpenAIService.swift; sourceTree = "<group>"; };
+		A1234567890ABCDEF1234567890ABCDEF1234579 /* OllamaService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OllamaService.swift; sourceTree = "<group>"; };
+		A1234567890ABCDEF1234567890ABCDEF1234581 /* ProjectDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectDetailView.swift; sourceTree = "<group>"; };
+		A1234567890ABCDEF1234567890ABCDEF1234583 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
+		A1234567890ABCDEF1234567890ABCDEF1234585 /* ProjectEditView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectEditView.swift; sourceTree = "<group>"; };
+		A1234567890ABCDEF1234567890ABCDEF1234587 /* WebsiteToiOSApp.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = WebsiteToiOSApp.entitlements; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -37,7 +56,12 @@
 			children = (
 				A1234567890ABCDEF1234567890ABCDEF1234567 /* WebsiteToiOSAppApp.swift */,
 				A1234567890ABCDEF1234567890ABCDEF1234569 /* ContentView.swift */,
+				A1234567890ABCDEF1234567890ABCDEF1234586 /* Models */,
+				A1234567890ABCDEF1234567890ABCDEF1234587 /* ViewModels */,
+				A1234567890ABCDEF1234567890ABCDEF1234588 /* Views */,
+				A1234567890ABCDEF1234567890ABCDEF1234589 /* Services */,
 				A1234567890ABCDEF1234567890ABCDEF123456B /* Assets.xcassets */,
+				A1234567890ABCDEF1234567890ABCDEF1234585 /* WebsiteToiOSApp.entitlements */,
 				A1234567890ABCDEF1234567890ABCDEF123456E /* Preview Content */,
 			);
 			path = WebsiteToiOSApp;
@@ -49,6 +73,43 @@
 				A1234567890ABCDEF1234567890ABCDEF123456D /* Preview Assets.xcassets */,
 			);
 			path = "Preview Content";
+			sourceTree = "<group>";
+		};
+		A1234567890ABCDEF1234567890ABCDEF1234586 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				A1234567890ABCDEF1234567890ABCDEF123456F /* Project.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		A1234567890ABCDEF1234567890ABCDEF1234587 /* ViewModels */ = {
+			isa = PBXGroup;
+			children = (
+				A1234567890ABCDEF1234567890ABCDEF1234571 /* WebsiteConversionViewModel.swift */,
+			);
+			path = ViewModels;
+			sourceTree = "<group>";
+		};
+		A1234567890ABCDEF1234567890ABCDEF1234588 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				A1234567890ABCDEF1234567890ABCDEF1234581 /* ProjectDetailView.swift */,
+				A1234567890ABCDEF1234567890ABCDEF1234583 /* SettingsView.swift */,
+				A1234567890ABCDEF1234567890ABCDEF1234585 /* ProjectEditView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		A1234567890ABCDEF1234567890ABCDEF1234589 /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				A1234567890ABCDEF1234567890ABCDEF1234573 /* WebsiteAnalyzer.swift */,
+				A1234567890ABCDEF1234567890ABCDEF1234575 /* AICodeGenerator.swift */,
+				A1234567890ABCDEF1234567890ABCDEF1234577 /* OpenAIService.swift */,
+				A1234567890ABCDEF1234567890ABCDEF1234579 /* OllamaService.swift */,
+			);
+			path = Services;
 			sourceTree = "<group>";
 		};
 		A1234567890ABCDEF1234567890ABCDEF123455F /* Products */ = {
@@ -139,6 +200,15 @@
 			files = (
 				A1234567890ABCDEF1234567890ABCDEF1234568 /* ContentView.swift in Sources */,
 				A1234567890ABCDEF1234567890ABCDEF1234567 /* WebsiteToiOSAppApp.swift in Sources */,
+				A1234567890ABCDEF1234567890ABCDEF123456E /* Project.swift in Sources */,
+				A1234567890ABCDEF1234567890ABCDEF1234570 /* WebsiteConversionViewModel.swift in Sources */,
+				A1234567890ABCDEF1234567890ABCDEF1234572 /* WebsiteAnalyzer.swift in Sources */,
+				A1234567890ABCDEF1234567890ABCDEF1234574 /* AICodeGenerator.swift in Sources */,
+				A1234567890ABCDEF1234567890ABCDEF1234576 /* OpenAIService.swift in Sources */,
+				A1234567890ABCDEF1234567890ABCDEF1234578 /* OllamaService.swift in Sources */,
+				A1234567890ABCDEF1234567890ABCDEF1234580 /* ProjectDetailView.swift in Sources */,
+				A1234567890ABCDEF1234567890ABCDEF1234582 /* SettingsView.swift in Sources */,
+				A1234567890ABCDEF1234567890ABCDEF1234584 /* ProjectEditView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

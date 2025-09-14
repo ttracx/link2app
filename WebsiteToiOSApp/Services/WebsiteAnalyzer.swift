@@ -17,21 +17,21 @@ struct WebsiteAnalysis: Codable {
     let accessibility: AccessibilityInfo
     let createdAt: Date
     
-    init(url: String, title: String, description: String? = nil) {
+    init(url: String, title: String, description: String? = nil, keywords: [String] = [], structure: WebsiteStructure = WebsiteStructure(), styles: StyleAnalysis = StyleAnalysis(), scripts: [ScriptInfo] = [], images: [ImageInfo] = [], forms: [FormInfo] = [], navigation: NavigationInfo = NavigationInfo(), mobileCompatibility: MobileCompatibility = MobileCompatibility(), performance: PerformanceMetrics = PerformanceMetrics(), accessibility: AccessibilityInfo = AccessibilityInfo(), createdAt: Date = Date()) {
         self.url = url
         self.title = title
         self.description = description
-        self.keywords = []
-        self.structure = WebsiteStructure()
-        self.styles = StyleAnalysis()
-        self.scripts = []
-        self.images = []
-        self.forms = []
-        self.navigation = NavigationInfo()
-        self.mobileCompatibility = MobileCompatibility()
-        self.performance = PerformanceMetrics()
-        self.accessibility = AccessibilityInfo()
-        self.createdAt = Date()
+        self.keywords = keywords
+        self.structure = structure
+        self.styles = styles
+        self.scripts = scripts
+        self.images = images
+        self.forms = forms
+        self.navigation = navigation
+        self.mobileCompatibility = mobileCompatibility
+        self.performance = performance
+        self.accessibility = accessibility
+        self.createdAt = createdAt
     }
 }
 
@@ -419,12 +419,196 @@ class WebsiteAnalyzer: NSObject {
     }
     
     private func parseAnalysisData(_ data: [String: Any]) throws -> WebsiteAnalysis {
-        // This would parse the JavaScript analysis data into Swift structs
-        // For now, return a basic analysis
+        let url = data["url"] as? String ?? ""
+        let title = data["title"] as? String ?? ""
+        let description = data["description"] as? String
+        
+        // Parse structure data
+        let structureData = data["structure"] as? [String: Any] ?? [:]
+        let structure = parseWebsiteStructure(structureData)
+        
+        // Parse styles data
+        let stylesData = data["styles"] as? [String: Any] ?? [:]
+        let styles = parseStyleAnalysis(stylesData)
+        
+        // Parse other components
+        let scripts = parseScripts(data["scripts"] as? [[String: Any]] ?? [])
+        let images = parseImages(data["images"] as? [[String: Any]] ?? [])
+        let forms = parseForms(data["forms"] as? [[String: Any]] ?? [])
+        let navigation = parseNavigation(data["navigation"] as? [String: Any] ?? [])
+        let mobileCompatibility = parseMobileCompatibility(data["mobileCompatibility"] as? [String: Any] ?? [])
+        let performance = parsePerformance(data["performance"] as? [String: Any] ?? [])
+        let accessibility = parseAccessibility(data["accessibility"] as? [String: Any] ?? [])
+        
         return WebsiteAnalysis(
-            url: data["url"] as? String ?? "",
-            title: data["title"] as? String ?? "",
-            description: data["description"] as? String
+            url: url,
+            title: title,
+            description: description,
+            keywords: data["keywords"] as? [String] ?? [],
+            structure: structure,
+            styles: styles,
+            scripts: scripts,
+            images: images,
+            forms: forms,
+            navigation: navigation,
+            mobileCompatibility: mobileCompatibility,
+            performance: performance,
+            accessibility: accessibility,
+            createdAt: Date()
+        )
+    }
+    
+    private func parseWebsiteStructure(_ data: [String: Any]) -> WebsiteStructure {
+        let mainSectionsData = data["mainSections"] as? [[String: Any]] ?? []
+        let mainSections = mainSectionsData.map { parseSectionInfo($0) }
+        
+        let layoutString = data["layout"] as? String ?? "unknown"
+        let layout = LayoutType(rawValue: layoutString) ?? .unknown
+        
+        return WebsiteStructure(
+            mainSections: mainSections,
+            header: nil,
+            footer: nil,
+            sidebar: nil,
+            content: nil,
+            layout: layout
+        )
+    }
+    
+    private func parseSectionInfo(_ data: [String: Any]) -> SectionInfo {
+        return SectionInfo(
+            id: data["id"] as? String,
+            className: data["className"] as? String,
+            tagName: data["tagName"] as? String ?? "",
+            content: data["content"] as? String ?? "",
+            children: [],
+            attributes: [:]
+        )
+    }
+    
+    private func parseStyleAnalysis(_ data: [String: Any]) -> StyleAnalysis {
+        let primaryColors = data["primaryColors"] as? [String] ?? []
+        let fontsData = data["fonts"] as? [[String: Any]] ?? []
+        let fonts = fontsData.map { parseFontInfo($0) }
+        
+        let spacingData = data["spacing"] as? [String: Any] ?? [:]
+        let spacing = SpacingInfo(
+            padding: spacingData["padding"] as? Double ?? 0,
+            margin: spacingData["margin"] as? Double ?? 0,
+            gap: spacingData["gap"] as? Double ?? 0
+        )
+        
+        return StyleAnalysis(
+            primaryColors: primaryColors,
+            fonts: fonts,
+            spacing: spacing,
+            borderRadius: data["borderRadius"] as? Double,
+            shadows: [],
+            animations: []
+        )
+    }
+    
+    private func parseFontInfo(_ data: [String: Any]) -> FontInfo {
+        return FontInfo(
+            family: data["family"] as? String ?? "",
+            size: data["size"] as? Double ?? 16,
+            weight: data["weight"] as? String ?? "normal",
+            style: data["style"] as? String ?? "normal"
+        )
+    }
+    
+    private func parseScripts(_ data: [[String: Any]]) -> [ScriptInfo] {
+        return data.map { scriptData in
+            ScriptInfo(
+                src: scriptData["src"] as? String,
+                type: scriptData["type"] as? String ?? "text/javascript",
+                content: scriptData["content"] as? String,
+                isExternal: scriptData["isExternal"] as? Bool ?? false
+            )
+        }
+    }
+    
+    private func parseImages(_ data: [[String: Any]]) -> [ImageInfo] {
+        return data.map { imageData in
+            ImageInfo(
+                src: imageData["src"] as? String ?? "",
+                alt: imageData["alt"] as? String,
+                width: imageData["width"] as? Double,
+                height: imageData["height"] as? Double,
+                isResponsive: imageData["isResponsive"] as? Bool ?? false
+            )
+        }
+    }
+    
+    private func parseForms(_ data: [[String: Any]]) -> [FormInfo] {
+        return data.map { formData in
+            let fieldsData = formData["fields"] as? [[String: Any]] ?? []
+            let fields = fieldsData.map { fieldData in
+                FormField(
+                    name: fieldData["name"] as? String ?? "",
+                    type: fieldData["type"] as? String ?? "text",
+                    placeholder: fieldData["placeholder"] as? String,
+                    required: fieldData["required"] as? Bool ?? false,
+                    validation: fieldData["validation"] as? String
+                )
+            }
+            
+            return FormInfo(
+                action: formData["action"] as? String,
+                method: formData["method"] as? String ?? "GET",
+                fields: fields,
+                validation: nil
+            )
+        }
+    }
+    
+    private func parseNavigation(_ data: [String: Any]) -> NavigationInfo {
+        let mainMenuData = data["mainMenu"] as? [[String: Any]] ?? []
+        let mainMenu = mainMenuData.map { menuData in
+            MenuItem(
+                text: menuData["text"] as? String ?? "",
+                url: menuData["url"] as? String ?? "",
+                children: []
+            )
+        }
+        
+        return NavigationInfo(
+            mainMenu: mainMenu,
+            breadcrumbs: [],
+            pagination: nil,
+            search: nil
+        )
+    }
+    
+    private func parseMobileCompatibility(_ data: [String: Any]) -> MobileCompatibility {
+        return MobileCompatibility(
+            isResponsive: data["isResponsive"] as? Bool ?? false,
+            viewport: data["viewport"] as? String,
+            touchFriendly: data["touchFriendly"] as? Bool ?? false,
+            mobileNavigation: data["mobileNavigation"] as? Bool ?? false,
+            performanceScore: data["performanceScore"] as? Double ?? 0.0
+        )
+    }
+    
+    private func parsePerformance(_ data: [String: Any]) -> PerformanceMetrics {
+        return PerformanceMetrics(
+            loadTime: data["loadTime"] as? Double ?? 0,
+            size: data["size"] as? Int ?? 0,
+            requests: data["requests"] as? Int ?? 0,
+            images: data["images"] as? Int ?? 0,
+            scripts: data["scripts"] as? Int ?? 0,
+            stylesheets: data["stylesheets"] as? Int ?? 0
+        )
+    }
+    
+    private func parseAccessibility(_ data: [String: Any]) -> AccessibilityInfo {
+        return AccessibilityInfo(
+            hasAltText: data["hasAltText"] as? Bool ?? false,
+            hasHeadings: data["hasHeadings"] as? Bool ?? false,
+            hasLabels: data["hasLabels"] as? Bool ?? false,
+            contrastRatio: data["contrastRatio"] as? Double ?? 0.0,
+            keyboardNavigation: data["keyboardNavigation"] as? Bool ?? false,
+            screenReaderSupport: data["screenReaderSupport"] as? Bool ?? false
         )
     }
 }
