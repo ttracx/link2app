@@ -41,10 +41,14 @@ window.addEventListener('scroll', () => {
   }
 });
 
-// Demo Form Functionality
+// Enhanced Demo Form Functionality
 const conversionForm = document.getElementById('conversionForm');
 const resultContainer = document.getElementById('result');
 const appPreview = document.getElementById('appPreview');
+const urlInput = document.getElementById('urlInput');
+const appNameInput = document.getElementById('appName');
+const aiModelSelect = document.getElementById('aiModel');
+const appTypeSelect = document.getElementById('appType');
 
 // Sample app previews for different types of websites
 const appPreviews = {
@@ -82,6 +86,32 @@ const appPreviews = {
       </div>
     `
   },
+  'blog': {
+    header: 'Blog App',
+    content: `
+      <div class="news-item">
+        <div class="news-title">Latest Post</div>
+        <div class="news-excerpt">Read about the latest trends in technology...</div>
+      </div>
+      <div class="news-item">
+        <div class="news-title">Tutorial Series</div>
+        <div class="news-excerpt">Step-by-step guides for developers...</div>
+      </div>
+    `
+  },
+  'corporate': {
+    header: 'Corporate App',
+    content: `
+      <div class="news-item">
+        <div class="news-title">About Us</div>
+        <div class="news-excerpt">Learn about our company and mission...</div>
+      </div>
+      <div class="news-item">
+        <div class="news-title">Contact</div>
+        <div class="news-excerpt">Get in touch with our team...</div>
+      </div>
+    `
+  },
   'default': {
     header: 'Web App',
     content: `
@@ -106,24 +136,42 @@ function detectWebsiteType(url) {
   return 'default';
 }
 
-// Function to update app preview
-function updateAppPreview(url, appName) {
+// Enhanced app preview function
+function updateAppPreview(url, appName, appType) {
   const websiteType = detectWebsiteType(url);
   const preview = appPreviews[websiteType] || appPreviews.default;
   
-  appPreview.innerHTML = `
-    <div class="app-header">
-      <div class="app-title">${appName || preview.header}</div>
-      <div class="app-controls">
-        <div class="control"></div>
-        <div class="control"></div>
-        <div class="control"></div>
+  // Override with app type if specified
+  if (appType && appPreviews[appType]) {
+    const typePreview = appPreviews[appType];
+    appPreview.innerHTML = `
+      <div class="app-header">
+        <div class="app-title">${appName || typePreview.header}</div>
+        <div class="app-controls">
+          <div class="control"></div>
+          <div class="control"></div>
+          <div class="control"></div>
+        </div>
       </div>
-    </div>
-    <div class="app-content">
-      ${preview.content}
-    </div>
-  `;
+      <div class="app-content">
+        ${typePreview.content}
+      </div>
+    `;
+  } else {
+    appPreview.innerHTML = `
+      <div class="app-header">
+        <div class="app-title">${appName || preview.header}</div>
+        <div class="app-controls">
+          <div class="control"></div>
+          <div class="control"></div>
+          <div class="control"></div>
+        </div>
+      </div>
+      <div class="app-content">
+        ${preview.content}
+      </div>
+    `;
+  }
 }
 
 // Function to show loading state
@@ -172,26 +220,119 @@ function showResult(success, message, downloadLink = null) {
   }
 }
 
-// Form submission handler
+// Enhanced form submission handler
 conversionForm.addEventListener('submit', async (e) => {
   e.preventDefault();
   
-  const url = document.getElementById('urlInput').value;
-  const appName = document.getElementById('appName').value;
-  const aiModel = document.getElementById('aiModel').value;
+  const url = urlInput.value;
+  const appName = appNameInput.value;
+  const aiModel = aiModelSelect.value;
+  const appType = appTypeSelect.value;
   
   // Update preview immediately
-  updateAppPreview(url, appName);
+  updateAppPreview(url, appName, appType);
   
   // Show loading state
   showLoading();
   
-  // Simulate processing time
-  setTimeout(() => {
-    // Simulate API call
-    simulateConversion(url, appName, aiModel);
-  }, 2000);
+  // Add loading class to button
+  const submitBtn = conversionForm.querySelector('button[type="submit"]');
+  submitBtn.classList.add('loading');
+  
+  // Simulate processing time with progress updates
+  simulateConversionWithProgress(url, appName, aiModel, appType);
 });
+
+// Enhanced conversion simulation with progress updates
+function simulateConversionWithProgress(url, appName, aiModel, appType) {
+  const progressSteps = [
+    { step: 'Analyzing website structure...', duration: 1000 },
+    { step: 'Extracting content and styling...', duration: 800 },
+    { step: 'Generating SwiftUI components...', duration: 1200 },
+    { step: 'Optimizing for iOS...', duration: 600 },
+    { step: 'Finalizing app structure...', duration: 400 }
+  ];
+  
+  let currentStep = 0;
+  let totalDuration = 0;
+  
+  function updateProgress() {
+    if (currentStep < progressSteps.length) {
+      const step = progressSteps[currentStep];
+      resultContainer.innerHTML = `
+        <div class="spinner"></div>
+        <p style="text-align: center; margin-top: 1rem; color: #666;">
+          ${step.step}
+        </p>
+      `;
+      
+      // Update stats
+      updateStats(currentStep + 1, progressSteps.length);
+      
+      setTimeout(() => {
+        currentStep++;
+        updateProgress();
+      }, step.duration);
+    } else {
+      // Complete the conversion
+      completeConversion(url, appName, aiModel, appType);
+    }
+  }
+  
+  updateProgress();
+}
+
+// Update preview stats
+function updateStats(step, totalSteps) {
+  const components = document.getElementById('components');
+  const linesOfCode = document.getElementById('linesOfCode');
+  const loadTime = document.getElementById('loadTime');
+  
+  if (components) {
+    components.textContent = Math.floor((step / totalSteps) * 15);
+  }
+  if (linesOfCode) {
+    linesOfCode.textContent = Math.floor((step / totalSteps) * 250);
+  }
+  if (loadTime) {
+    loadTime.textContent = `${(step * 0.8).toFixed(1)}s`;
+  }
+}
+
+// Complete conversion process
+function completeConversion(url, appName, aiModel, appType) {
+  const submitBtn = conversionForm.querySelector('button[type="submit"]');
+  submitBtn.classList.remove('loading');
+  
+  // Simulate different outcomes based on URL and app type
+  const isSuccess = Math.random() > 0.15; // 85% success rate for demo
+  
+  if (isSuccess) {
+    const messages = {
+      'news': 'Your news website has been successfully converted into a native iOS app with article views, categories, and search functionality.',
+      'ecommerce': 'Your e-commerce store has been converted into a native iOS app with product listings, shopping cart, and checkout flow.',
+      'portfolio': 'Your portfolio website has been transformed into a native iOS app with image galleries and project showcases.',
+      'blog': 'Your blog has been converted into a native iOS app with article reading, categories, and social sharing.',
+      'corporate': 'Your corporate website has been converted into a native iOS app with company information and contact features.',
+      'default': 'Your website has been successfully converted into a native iOS app with native navigation and optimized UI components.'
+    };
+    
+    showResult(true, messages[appType] || messages.default);
+    
+    // Update final stats
+    updateStats(5, 5);
+  } else {
+    const errorMessages = [
+      'Unable to access the website. Please check the URL and try again.',
+      'The website structure is too complex for automatic conversion. Try a simpler website.',
+      'Network error occurred during analysis. Please try again later.',
+      'The website requires authentication or has restricted access.'
+    ];
+    
+    const randomError = errorMessages[Math.floor(Math.random() * errorMessages.length)];
+    showResult(false, randomError);
+  }
+}
 
 // Simulate conversion process
 function simulateConversion(url, appName, aiModel) {
@@ -221,13 +362,14 @@ function simulateConversion(url, appName, aiModel) {
   }
 }
 
-// Real-time preview update as user types
-document.getElementById('urlInput').addEventListener('input', (e) => {
+// Enhanced real-time preview update
+urlInput.addEventListener('input', (e) => {
   const url = e.target.value;
-  const appName = document.getElementById('appName').value;
+  const appName = appNameInput.value;
+  const appType = appTypeSelect.value;
   
   if (url.length > 10) {
-    updateAppPreview(url, appName);
+    updateAppPreview(url, appName, appType);
   } else {
     appPreview.innerHTML = `
       <div class="preview-placeholder">
@@ -239,12 +381,79 @@ document.getElementById('urlInput').addEventListener('input', (e) => {
 });
 
 // App name change handler
-document.getElementById('appName').addEventListener('input', (e) => {
-  const url = document.getElementById('urlInput').value;
+appNameInput.addEventListener('input', (e) => {
+  const url = urlInput.value;
   const appName = e.target.value;
+  const appType = appTypeSelect.value;
   
   if (url.length > 10) {
-    updateAppPreview(url, appName);
+    updateAppPreview(url, appName, appType);
+  }
+});
+
+// App type change handler
+appTypeSelect.addEventListener('change', (e) => {
+  const url = urlInput.value;
+  const appName = appNameInput.value;
+  const appType = e.target.value;
+  
+  if (url.length > 10) {
+    updateAppPreview(url, appName, appType);
+  }
+});
+
+// URL suggestions functionality
+document.addEventListener('DOMContentLoaded', () => {
+  const suggestions = document.querySelectorAll('.suggestion');
+  suggestions.forEach(suggestion => {
+    suggestion.addEventListener('click', () => {
+      const url = suggestion.getAttribute('data-url');
+      urlInput.value = url;
+      updateAppPreview(url, appNameInput.value, appTypeSelect.value);
+    });
+  });
+});
+
+// Preview controls functionality
+document.addEventListener('DOMContentLoaded', () => {
+  const controlBtns = document.querySelectorAll('.control-btn');
+  const previewPhone = document.querySelector('.preview-phone');
+  
+  controlBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      // Remove active class from all buttons
+      controlBtns.forEach(b => b.classList.remove('active'));
+      // Add active class to clicked button
+      btn.classList.add('active');
+      
+      const view = btn.getAttribute('data-view');
+      if (view === 'tablet') {
+        previewPhone.style.transform = 'scale(1.2)';
+        previewPhone.style.width = '300px';
+        previewPhone.style.height = '400px';
+      } else {
+        previewPhone.style.transform = 'scale(1)';
+        previewPhone.style.width = '250px';
+        previewPhone.style.height = '500px';
+      }
+    });
+  });
+});
+
+// Video demo functionality
+document.addEventListener('DOMContentLoaded', () => {
+  const videoPlaceholder = document.querySelector('.video-placeholder');
+  if (videoPlaceholder) {
+    videoPlaceholder.addEventListener('click', () => {
+      // Simulate video play
+      videoPlaceholder.innerHTML = `
+        <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%; color: white;">
+          <i class="fas fa-play-circle" style="font-size: 4rem; margin-bottom: 1rem;"></i>
+          <h3>Demo Video Playing</h3>
+          <p>This would show the actual Link2App demo video</p>
+        </div>
+      `;
+    });
   }
 });
 
